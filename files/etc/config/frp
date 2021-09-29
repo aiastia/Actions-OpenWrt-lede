@@ -23,7 +23,7 @@ config proxy
 	option remark 'aiastia2'
 	option enable '1'
 	option remote_port '10512'
-	option local_ip '192.168.1.30'
+	option local_ip '192.168.0.30'
 	option local_port '80'
 
 config proxy
@@ -34,7 +34,7 @@ config proxy
 	option remark 'aiastia1'
 	option enable '1'
 	option remote_port '10511'
-	option local_ip '192.168.1.10'
+	option local_ip '192.168.0.10'
 	option local_port '443'
 
 config proxy
@@ -45,6 +45,6 @@ config proxy
 	option local_port '22'
 	option remote_port '10513'
 	option remark 'aiastia3'
-	option local_ip '192.168.1.30'
+	option local_ip '192.168.0.30'
 	option enable '1'
 
