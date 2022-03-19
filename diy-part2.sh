@@ -19,3 +19,4 @@ git clone https://github.com/rufengsuixing/luci-app-adguardhome package/luci-app
 git clone -b lede https://github.com/pymumu/luci-app-smartdns.git  package/lean/luci-app-smartdns
 git clone https://github.com/xiaorouji/openwrt-passwall package/openwrt-passwall
 chmod -R 755 files
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
