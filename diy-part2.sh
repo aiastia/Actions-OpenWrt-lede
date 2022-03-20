@@ -18,6 +18,7 @@ git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci
 #git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/luci-app-jd-dailybonus
 git clone -b lede https://github.com/pymumu/luci-app-smartdns.git  package/lean/luci-app-smartdns
 #git clone https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
+git clone https://github.com/xiaorouji/openwrt-passwall2.git package/openwrt-passwall2
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
 #chmod -R 755 files
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
