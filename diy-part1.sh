@@ -20,4 +20,5 @@ echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.co
 echo 'src-git diskman https://github.com/lisaac/luci-app-diskman' >>feeds.conf.default
 #echo 'src-git kenzo https://github.com/psantiagoantony/Openwrt-packages' >>feeds.conf.default
 #echo 'src-git luci https://github.com/openwrt/luci.git' >>feeds.conf.default
-#echo 'src-git luci-app-passwall https://github.com/xiaorouji/openwrt-passwall2.git' >>feeds.conf.default
+echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default     
+echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
