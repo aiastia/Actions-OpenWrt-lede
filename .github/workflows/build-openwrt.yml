@@ -101,21 +101,21 @@ jobs:
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
-#    - name: passwall-luci
-#      run: |
-#        cd openwrt 
-#        wget -P package https://codeload.github.com/xiaorouji/openwrt-passwall/zip/refs/heads/luci -O package/luci-passwall
-#        chmod +x package/luci-passwall
-#        unzip -d package/ package/luci-passwall
-#        mv package/openwrt-passwall-luci/luci-app-passwall/ package/
-#        rm -rf package/luci-passwall package/openwrt-passwall-luci
-
-    - name: luci-theme-argon install
+    - name: passwall-luci
       run: |
-       cd openwrt
-       cd package/lean  
-       rm -rf luci-theme-argon  
-       git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
+        cd openwrt 
+        wget -P package https://codeload.github.com/xiaorouji/openwrt-passwall/zip/refs/heads/luci -O package/luci-passwall
+        chmod +x package/luci-passwall
+        unzip -d package/ package/luci-passwall
+        mv package/openwrt-passwall-luci/luci-app-passwall/ package/
+        rm -rf package/luci-passwall package/openwrt-passwall-luci
+
+#    - name: luci-theme-argon install
+#      run: |
+#       cd openwrt
+#       cd package/lean  
+#       rm -rf luci-theme-argon  
+#       git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
         
     - name: Compile the firmware
       id: compile
