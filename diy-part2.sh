@@ -20,5 +20,6 @@ git clone -b lede https://github.com/pymumu/luci-app-smartdns.git  package/lean/
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
 #git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/luci-app-jd-dailybonus
 #git clone https://github.com/xiaorouji/openwrt-passwall.git package/openwrt-passwall
+git clone https://github.com/sbwml/luci-app-alist package/alist
 #chmod -R 755 files
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' ./feeds/luci/collections/luci/Makefile
