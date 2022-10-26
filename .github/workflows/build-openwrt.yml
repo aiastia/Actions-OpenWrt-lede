@@ -114,7 +114,9 @@ jobs:
     - name: luci-theme-argon install
       run: |
        cd openwrt
+       ls
        cd package/lean  
+       ls
        rm -rf luci-theme-argon  
        git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
         
