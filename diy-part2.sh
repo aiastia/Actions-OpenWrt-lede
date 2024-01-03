@@ -26,3 +26,5 @@ git clone https://github.com/sbwml/luci-app-alist package/alist
 #golang19
 #rm -rf feeds/packages/lang/golang
 #svn export https://github.com/sbwml/packages_lang_golang/branches/20.x feeds/packages/lang/golang
+rm -rf feeds/packages/lang/golang
+svn export https://github.com/sbwml/packages_lang_golang/branches/20.x feeds/packages/lang/golang
