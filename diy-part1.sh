@@ -31,4 +31,4 @@ echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.de
 echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 #echo 'src-git small8 https://github.com/kenzok8/small-package' >>feeds.conf.default
 
-#echo 'src-git alist_luci https://github.com/sbwml/openwrt-alist' >>feeds.conf.default
+echo 'src-git alist_luci https://github.com/sbwml/openwrt-alist' >>feeds.conf.default
