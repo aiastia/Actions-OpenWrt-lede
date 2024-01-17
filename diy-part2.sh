@@ -15,6 +15,7 @@
 #rm -rf package/lean/luci-theme-argon
 #git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git  package/lean/luci-theme-argon
 git clone --depth=1 https://github.com/rufengsuixing/luci-app-adguardhome.git package/luci-app-adguardhome
+rm -rf feeds/packages/net/adguardhome
 git clone -b lede https://github.com/pymumu/luci-app-smartdns.git  package/lean/luci-app-smartdns
 #git clone https://github.com/xiaorouji/openwrt-passwall2.git package/openwrt-passwall2
 git clone  --depth=1 https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
