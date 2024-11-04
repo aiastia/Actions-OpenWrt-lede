@@ -104,10 +104,10 @@ jobs:
        clean:  'false'  # 'false' 默认值
        prefix: ${{ github.workspace }}/openwrt
        
-    # - name: luci-theme-argonn
-    #   run: |
-    #     cd openwrt/package 		
-    #     git clone https://github.com/jerrykuku/luci-theme-argon.git luci-theme-argonn
+    - name: luci-theme-argonn
+      run: |
+        cd openwrt/package 		
+        git clone https://github.com/jerrykuku/luci-theme-argon.git luci-theme-argon
       
        
     - name: Load custom feeds
