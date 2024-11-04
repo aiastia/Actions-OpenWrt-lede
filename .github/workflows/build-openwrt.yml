@@ -107,6 +107,7 @@ jobs:
     - name: luci-theme-argonn
       run: |
         cd openwrt/package 		
+        ls
         git clone https://github.com/jerrykuku/luci-theme-argon.git luci-theme-argon
       
        
