@@ -34,3 +34,4 @@ echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 
 echo 'src-git alist_luci https://github.com/sbwml/openwrt-alist' >>feeds.conf.default
 echo 'src-git istore https://github.com/linkease/istore;main' >> feeds.conf.default
+echo 'src-git smpackage https://github.com/kenzok8/small-package' >> feeds.conf.default
