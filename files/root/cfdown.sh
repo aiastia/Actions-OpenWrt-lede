@@ -1,5 +1,6 @@
 #!/bin/sh
-
+#ps | grep cloudflared
+#kill 
 # 定义 GitHub 项目和文件名
 REPO="cloudflare/cloudflared"
 
