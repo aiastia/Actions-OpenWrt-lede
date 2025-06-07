@@ -21,7 +21,7 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default  # PassWall 1
 
 # PassWall 依赖包
-echo 'src-git openwrt-passwall-packages https://github.com/xiaorouji/openwrt-passwall-packages' >>feeds.conf.default
+echo 'src-git openwrt_passwall_packages https://github.com/xiaorouji/openwrt-passwall-packages' >>feeds.conf.default
 
 # 常用插件源
 echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
