@@ -35,5 +35,3 @@ sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.con
 ## echo 'src-git eqosplus https://github.com/sirpdboy/luci-app-eqosplus' >>feeds.conf.default
 echo 'src-git alist_luci https://github.com/sbwml/openwrt-alist' >>feeds.conf.default
 echo 'src-git istore https://github.com/linkease/istore main' >>feeds.conf.default  # 修正分支语法
-
-rm -rf feeds/smpackage/webd
