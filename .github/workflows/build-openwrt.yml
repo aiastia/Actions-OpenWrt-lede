@@ -143,15 +143,21 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: cd openwrt  &&  ./scripts/feeds update -a
+      run: |
+        cd openwrt
+        ./scripts/feeds update -a
 
-      
     - name: Remove webd
       run: |
         cd openwrt
         rm -rf feeds/smpackage/webd
-        - name: Install feeds
-          run: cd openwrt && ./scripts/feeds install -a
+        rm -rf feeds/smpackage/webd-static 2>/dev/null || true
+
+    - name: Install feeds
+      run: |
+        cd openwrt
+        ./scripts/feeds install -a
+
 
     - name: Load custom configuration
       run: |
