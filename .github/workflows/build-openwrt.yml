@@ -145,8 +145,13 @@ jobs:
     - name: Update feeds
       run: cd openwrt  &&  ./scripts/feeds update -a
 
-    - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      
+    - name: Remove webd
+      run: |
+        cd openwrt
+        rm -rf feeds/smpackage/webd
+        - name: Install feeds
+          run: cd openwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
@@ -196,14 +201,6 @@ jobs:
     - name: Check space usage
       if: (!cancelled())
       run: df -hT
-      
-    - name: Show webd dump info
-      if: failure()
-      run: |
-        ls -lah "$GITHUB_WORKSPACE/openwrt/logs/feeds/smpackage/webd" || true
-        sed -n '1,200p' "$GITHUB_WORKSPACE/openwrt/logs/feeds/smpackage/webd/dump.txt" || true
-        tail -n 200 "$GITHUB_WORKSPACE/openwrt/logs/feeds/smpackage/webd/dump.txt" || true
-    
 
     - name: Upload bin directory
       uses: actions/upload-artifact@main
