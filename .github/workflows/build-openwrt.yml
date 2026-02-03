@@ -196,6 +196,14 @@ jobs:
     - name: Check space usage
       if: (!cancelled())
       run: df -hT
+      
+    - name: Show webd dump info
+      if: failure()
+      run: |
+        echo "===== webd dump.txt ====="
+        sed -n '1,200p' logs/feeds/smpackage/webd/dump.txt || true
+        echo "===== last 200 lines ====="
+        tail -n 200 logs/feeds/smpackage/webd/dump.txt || true
 
     - name: Upload bin directory
       uses: actions/upload-artifact@main
