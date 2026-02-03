@@ -147,11 +147,11 @@ jobs:
         cd openwrt
         ./scripts/feeds update -a
 
-    - name: Remove webd
-      run: |
-        cd openwrt
-        rm -rf feeds/smpackage/webd
-        rm -rf feeds/smpackage/webd-static 2>/dev/null || true
+    # - name: Remove webd
+    #   run: |
+    #     cd openwrt
+    #     rm -rf feeds/smpackage/webd
+    #     rm -rf feeds/smpackage/webd-static 2>/dev/null || true
 
     - name: Install feeds
       run: |
