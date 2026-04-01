@@ -120,13 +120,31 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
    
-    - name: Cache
-      uses: klever1988/cachewrtbuild@main
+    # - name: Cache
+    #   uses: klever1988/cachewrtbuild@main
+    #   with:
+    #    ccache: 'true' #'true' 默认值
+    #    #清空缓存
+    #    clean:  'false'  # 'false' 默认值
+    #    prefix: ${{ github.workspace }}/openwrt
+
+    - name: Cache OpenWrt ccache
+      uses: actions/cache@v3
       with:
-       ccache: 'true' #'true' 默认值
-       #清空缓存
-       clean:  'false'  # 'false' 默认值
-       prefix: ${{ github.workspace }}/openwrt
+        path: ${{ github.workspace }}/openwrt/.ccache
+        key: ${{ runner.os }}-ccache-${{ github.sha }}
+        restore-keys: ${{ runner.os }}-ccache-
+    
+    - name: Cache OpenWrt build
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ github.workspace }}/openwrt/build_dir
+          ${{ github.workspace }}/openwrt/staging_dir
+          ${{ github.workspace }}/openwrt/dl
+        key: ${{ runner.os }}-openwrt-build-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt-build-
        
     - name: luci-theme-argonn
       run: |
