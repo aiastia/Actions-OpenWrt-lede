@@ -42,44 +42,15 @@ jobs:
     steps:
 
     - name: Maximize Build Space
-      uses: smallprogram/maximize-build-space@master
+      uses: justinthelaw/maximize-github-runner-space@latest
       with:
-        root-reserve-mb: 8192
-        swap-size-mb: 2048
-        remove-dotnet: 'true'
-        remove-android: 'true'
-        remove-haskell: 'true'
-        remove-codeql: 'true'
-        remove-docker-images: 'true'
-        build-mount-path: '/workdir'
-
-
-    # - name: Maximize Build Space
-    #   uses: justinthelaw/maximize-github-runner-space@latest
-    #   with:
-    #     cleanup-profile: custom
-    #     remove-android: "true"
-    #     remove-codeql: "true"
-    #     remove-cached-tools: "true"
-    #     remove-docker-images: "true"
-
-
-    # - name: Free up root disk space
-    #   run: |
-    #     # 清理 Actions Runner 诊断日志（注意：不能删除 cached 目录本身，否则会删除 runner 的 node）
-    #     sudo rm -rf /home/runner/actions-runner/cached/2.333.1/_diag/ 2>/dev/null || true
-    #     # 清理 runner 临时文件
-    #     sudo rm -rf /home/runner/_work/_temp/* 2>/dev/null || true
-    #     sudo rm -rf /tmp/_setup-* 2>/dev/null || true
-    #     # 清理 pip/npm 等用户缓存
-    #     rm -rf ~/.cache/pip ~/.npm ~/.nuget 2>/dev/null || true
-    #     # 清理 apt 缓存
-    #     sudo apt clean
-    #     sudo rm -rf /var/cache/apt/archives/*
-    #     # 清理日志
-    #     sudo journalctl --vacuum-time=1s 2>/dev/null || true
-    #     echo "After cleanup:"
-    #     df -h /
+        cleanup-profile: custom
+        remove-dotnet: "true"
+        remove-android: "true"
+        remove-haskell: "true"
+        remove-codeql: "true"
+        remove-docker-images: "true"
+        swapfile-size: 2G
 
     - name: Checkout
       uses: actions/checkout@v4
