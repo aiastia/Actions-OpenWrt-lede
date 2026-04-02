@@ -42,7 +42,7 @@ jobs:
     steps:
 
     - name: Maximize Build Space
-      uses: easimon/maximize-build-space@master
+      uses: smallprogram/maximize-build-space@master
       with:
         root-reserve-mb: 8192
         swap-size-mb: 2048
@@ -52,6 +52,17 @@ jobs:
         remove-codeql: 'true'
         remove-docker-images: 'true'
         build-mount-path: '/workdir'
+
+
+    # - name: Maximize Build Space
+    #   uses: justinthelaw/maximize-github-runner-space@latest
+    #   with:
+    #     cleanup-profile: custom
+    #     remove-android: "true"
+    #     remove-codeql: "true"
+    #     remove-cached-tools: "true"
+    #     remove-docker-images: "true"
+
 
     # - name: Free up root disk space
     #   run: |
