@@ -42,7 +42,7 @@ jobs:
     steps:
 
     - name: Maximize Build Space
-      uses: justinthelaw/maximize-github-runner-space@latest
+      uses: justinthelaw/maximize-github-runner-space@v0.8.0
       with:
         cleanup-profile: custom
         remove-dotnet: "true"
