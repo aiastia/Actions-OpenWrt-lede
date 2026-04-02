@@ -53,22 +53,22 @@ jobs:
         remove-docker-images: 'true'
         build-mount-path: '/workdir'
 
-    - name: Free up root disk space
-      run: |
-        # 清理 Actions Runner 诊断日志（注意：不能删除 cached 目录本身，否则会删除 runner 的 node）
-        sudo rm -rf /home/runner/actions-runner/cached/2.333.1/_diag/ 2>/dev/null || true
-        # 清理 runner 临时文件
-        sudo rm -rf /home/runner/_work/_temp/* 2>/dev/null || true
-        sudo rm -rf /tmp/_setup-* 2>/dev/null || true
-        # 清理 pip/npm 等用户缓存
-        rm -rf ~/.cache/pip ~/.npm ~/.nuget 2>/dev/null || true
-        # 清理 apt 缓存
-        sudo apt clean
-        sudo rm -rf /var/cache/apt/archives/*
-        # 清理日志
-        sudo journalctl --vacuum-time=1s 2>/dev/null || true
-        echo "After cleanup:"
-        df -h /
+    # - name: Free up root disk space
+    #   run: |
+    #     # 清理 Actions Runner 诊断日志（注意：不能删除 cached 目录本身，否则会删除 runner 的 node）
+    #     sudo rm -rf /home/runner/actions-runner/cached/2.333.1/_diag/ 2>/dev/null || true
+    #     # 清理 runner 临时文件
+    #     sudo rm -rf /home/runner/_work/_temp/* 2>/dev/null || true
+    #     sudo rm -rf /tmp/_setup-* 2>/dev/null || true
+    #     # 清理 pip/npm 等用户缓存
+    #     rm -rf ~/.cache/pip ~/.npm ~/.nuget 2>/dev/null || true
+    #     # 清理 apt 缓存
+    #     sudo apt clean
+    #     sudo rm -rf /var/cache/apt/archives/*
+    #     # 清理日志
+    #     sudo journalctl --vacuum-time=1s 2>/dev/null || true
+    #     echo "After cleanup:"
+    #     df -h /
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -96,11 +96,20 @@ jobs:
 
         sudo apt update -y
         
-        sudo apt install --no-install-recommends -y \
-          build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext \
-          git libncurses5-dev libssl-dev python3 python3-pyelftools \
-          python3-setuptools rsync unzip zlib1g-dev file wget curl qemu-utils ccache \
-          libelf-dev libtool pkgconf
+        # sudo apt install --no-install-recommends -y \
+        #   build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext \
+        #   git libncurses5-dev libssl-dev python3 python3-pyelftools \
+        #   python3-setuptools rsync unzip zlib1g-dev file wget curl qemu-utils ccache \
+        #   libelf-dev libtool pkgconf
+
+
+        sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+        bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
+        genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
+        libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
+        libreadline-dev libssl-dev libtool llvm lrzsz libnsl-dev ninja-build p7zip p7zip-full patch pkgconf \
+        python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
+        swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
         # 清理 apt 缓存和临时配置
         sudo -E apt-get -qq autoremove --purge
