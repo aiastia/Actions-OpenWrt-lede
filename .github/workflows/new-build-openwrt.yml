@@ -55,8 +55,8 @@ jobs:
 
     - name: Free up root disk space
       run: |
-        # 清理 Actions Runner 诊断日志
-        sudo rm -rf /home/runner/actions-runner/cached/*/ _diag/ 2>/dev/null || true
+        # 清理 Actions Runner 诊断日志（注意：不能删除 cached 目录本身，否则会删除 runner 的 node）
+        sudo rm -rf /home/runner/actions-runner/cached/2.333.1/_diag/ 2>/dev/null || true
         # 清理 runner 临时文件
         sudo rm -rf /home/runner/_work/_temp/* 2>/dev/null || true
         sudo rm -rf /tmp/_setup-* 2>/dev/null || true
