@@ -53,8 +53,25 @@ jobs:
         remove-docker-images: 'true'
         build-mount-path: '/workdir'
 
+    - name: Free up root disk space
+      run: |
+        # 清理 Actions Runner 诊断日志
+        sudo rm -rf /home/runner/actions-runner/cached/*/ _diag/ 2>/dev/null || true
+        # 清理 runner 临时文件
+        sudo rm -rf /home/runner/_work/_temp/* 2>/dev/null || true
+        sudo rm -rf /tmp/_setup-* 2>/dev/null || true
+        # 清理 pip/npm 等用户缓存
+        rm -rf ~/.cache/pip ~/.npm ~/.nuget 2>/dev/null || true
+        # 清理 apt 缓存
+        sudo apt clean
+        sudo rm -rf /var/cache/apt/archives/*
+        # 清理日志
+        sudo journalctl --vacuum-time=1s 2>/dev/null || true
+        echo "After cleanup:"
+        df -h /
+
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Disk space
       run: |
