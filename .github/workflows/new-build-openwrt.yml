@@ -174,8 +174,8 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-
-     - name: Show and Save OpenWrt Configuration
+      
+    - name: Show and Save OpenWrt Configuration
       run: |
         cd openwrt
         
@@ -225,7 +225,7 @@ jobs:
         # 8. 显示 diffconfig 内容
         echo "config-diff.txt 内容："
         cat $GITHUB_WORKSPACE/config-diff.txt
-
+      
     - name: Upload configuration artifacts
       uses: actions/upload-artifact@v4
       with:
