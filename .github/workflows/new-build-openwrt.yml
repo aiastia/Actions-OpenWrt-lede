@@ -53,7 +53,7 @@ jobs:
         swapfile-size: 8G
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Disk space
       run: |
@@ -227,7 +227,7 @@ jobs:
         cat $GITHUB_WORKSPACE/config-diff.txt
       
     - name: Upload configuration artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: openwrt-configuration
         path: |
