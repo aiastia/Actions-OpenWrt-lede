@@ -20,8 +20,8 @@
 # echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default        # PassWall 2
 #echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default  # PassWall 1
 
-echo 'src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default  # PassWall 1
-echo 'src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main' >>feeds.conf.default  # PassWall 1
+#echo 'src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default  # PassWall 1
+#echo 'src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main' >>feeds.conf.default  # PassWall 1
 
 
 # 常用插件源
