@@ -109,24 +109,24 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    # - name: Cache OpenWrt ccache
-    #   uses: actions/cache@v5
-    #   with:
-    #     path: ${{ github.workspace }}/openwrt/.ccache
-    #     key: ${{ runner.os }}-ccache-${{ hashFiles('openwrt/.config') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-ccache-
+    - name: Cache OpenWrt ccache
+      uses: actions/cache@v5
+      with:
+        path: ${{ github.workspace }}/openwrt/.ccache
+        key: ${{ runner.os }}-ccache-${{ hashFiles('openwrt/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-
 
-    # - name: Cache OpenWrt build
-    #   uses: actions/cache@v5
-    #   with:
-    #     path: |
-    #       ${{ github.workspace }}/openwrt/build_dir
-    #       ${{ github.workspace }}/openwrt/staging_dir
-    #       ${{ github.workspace }}/openwrt/dl
-    #     key: ${{ runner.os }}-openwrt-build-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-openwrt-build-
+    - name: Cache OpenWrt build
+      uses: actions/cache@v5
+      with:
+        path: |
+          ${{ github.workspace }}/openwrt/build_dir
+          ${{ github.workspace }}/openwrt/staging_dir
+          ${{ github.workspace }}/openwrt/dl
+        key: ${{ runner.os }}-openwrt-build-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt-build-
 
     - name: Load custom feeds
       run: |
