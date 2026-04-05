@@ -138,6 +138,10 @@ jobs:
     - name: Update feeds
       run: |
         cd openwrt
+        # 清理 feeds 和索引
+        rm -rf feeds
+        rm -rf tmp
+        rm -rf staging_dir
         ./scripts/feeds update -a
 
     - name: Install feeds
