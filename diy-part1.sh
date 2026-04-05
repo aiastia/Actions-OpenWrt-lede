@@ -33,4 +33,4 @@ echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 ## echo 'src-git eqosplus https://github.com/sirpdboy/luci-app-eqosplus' >>feeds.conf.default
 echo 'src-git alist_luci https://github.com/sbwml/openwrt-alist' >>feeds.conf.default
 echo 'src-git istore https://github.com/linkease/istore;main' >>feeds.conf.default  # 修正分支语法
-#echo 'src-git nps https://github.com/djylb/nps-openwrt.git' >> feeds.conf.default
+echo 'src-git nps https://github.com/djylb/nps-openwrt.git' >> feeds.conf.default
