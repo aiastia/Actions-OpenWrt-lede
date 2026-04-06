@@ -117,16 +117,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-ccache-
 
-    - name: Cache OpenWrt build
+    - name: Cache OpenWrt dl
       uses: actions/cache@v5
       with:
-        path: |
-          ${{ github.workspace }}/openwrt/build_dir
-          ${{ github.workspace }}/openwrt/staging_dir
-          ${{ github.workspace }}/openwrt/dl
-        key: ${{ runner.os }}-openwrt-build-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
+        path: ${{ github.workspace }}/openwrt/dl
+        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
         restore-keys: |
-          ${{ runner.os }}-openwrt-build-
+          ${{ runner.os }}-openwrt-dl-
 
     - name: Load custom feeds
       run: |
