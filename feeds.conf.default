@@ -8,7 +8,7 @@ src-git telephony https://github.com/coolsnowwolf/telephony.git
 
 # 常用插件源
 src-git kenzo https://github.com/kenzok8/openwrt-packages
-#src-git small https://github.com/kenzok8/small
+src-git small https://github.com/kenzok8/small
 
 # PassWall 1 (新版)
 src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
@@ -21,21 +21,9 @@ src-git nps https://github.com/djylb/nps-openwrt.git
 
 # ========== 备用 Feed 源（取消注释即可启用） ==========
 
-# PassWall 2
-#src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2
-
-# PassWall 1 (旧版)
-#src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall
-
-# PassWall 1 (新版)
-#src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
-#src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main
-
 # HelloWorld (ShadowSocksR 等)
 #src-git helloworld https://github.com/fw876/helloworld
 
 # 其他工具
 #src-git eqosplus https://github.com/sirpdboy/luci-app-eqosplus
-#src-git nps https://github.com/djylb/nps-openwrt.git
-#src-git smpackage https://github.com/kenzok8/small-package
 
