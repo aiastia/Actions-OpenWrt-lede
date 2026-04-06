@@ -1,0 +1,41 @@
+# Base feeds from coolsnowwolf/lede
+src-git packages https://github.com/coolsnowwolf/packages
+src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-23.05
+src-git routing https://github.com/coolsnowwolf/routing
+src-git telephony https://github.com/coolsnowwolf/telephony.git
+
+# ========== 自定义 Feed 源（已启用） ==========
+
+# 常用插件源
+src-git kenzo https://github.com/kenzok8/openwrt-packages
+#src-git small https://github.com/kenzok8/small
+
+# PassWall 1 (新版)
+src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
+src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main
+
+# 其他工具
+src-git alist_luci https://github.com/sbwml/openwrt-alist
+src-git istore https://github.com/linkease/istore;main
+src-git nps https://github.com/djylb/nps-openwrt.git
+
+# ========== 备用 Feed 源（取消注释即可启用） ==========
+
+# PassWall 2
+#src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2
+
+# PassWall 1 (旧版)
+#src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall
+
+# PassWall 1 (新版)
+#src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main
+#src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main
+
+# HelloWorld (ShadowSocksR 等)
+#src-git helloworld https://github.com/fw876/helloworld
+
+# 其他工具
+#src-git eqosplus https://github.com/sirpdboy/luci-app-eqosplus
+#src-git nps https://github.com/djylb/nps-openwrt.git
+#src-git smpackage https://github.com/kenzok8/small-package
+

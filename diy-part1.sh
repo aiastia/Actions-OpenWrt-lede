@@ -10,27 +10,6 @@
 # Description: OpenWrt DIY script part 1 (Before Update feeds)
 #
 
-# Uncomment a feed source
-#sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
-
-# Add a feed source
-#echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-
-# 二选一：PassWall 1 或 PassWall 2
-# echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default        # PassWall 2
-#echo 'src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default  # PassWall 1
-
-echo 'src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default  # PassWall 1
-echo 'src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;main' >>feeds.conf.default  # PassWall 1
-
-
-# 常用插件源
-echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
-#sed -i '$a src-git smpackage https://github.com/kenzok8/small-package' feeds.conf.default
-#echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
-
-# 其他工具
-## echo 'src-git eqosplus https://github.com/sirpdboy/luci-app-eqosplus' >>feeds.conf.default
-echo 'src-git alist_luci https://github.com/sbwml/openwrt-alist' >>feeds.conf.default
-echo 'src-git istore https://github.com/linkease/istore;main' >>feeds.conf.default  # 修正分支语法
-echo 'src-git nps https://github.com/djylb/nps-openwrt.git' >> feeds.conf.default
+# Feed 源已通过 feeds.conf.default 文件管理
+# 工作流会自动将 feeds.conf.default 复制到 openwrt 目录
+# 如需额外操作可在此添加
