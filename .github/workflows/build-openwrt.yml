@@ -152,16 +152,14 @@ jobs:
         key: ${{ runner.os }}-ccache-${{ github.sha }}
         restore-keys: ${{ runner.os }}-ccache-
     
-    - name: Cache OpenWrt build
+    - name: Cache OpenWrt dl
       uses: actions/cache@v3
       with:
         path: |
-          ${{ github.workspace }}/openwrt/build_dir
-          ${{ github.workspace }}/openwrt/staging_dir
           ${{ github.workspace }}/openwrt/dl
-        key: ${{ runner.os }}-openwrt-build-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
+        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
         restore-keys: |
-          ${{ runner.os }}-openwrt-build-
+          ${{ runner.os }}-openwrt-dl-
        
     - name: luci-theme-argonn
       run: |
@@ -192,6 +190,38 @@ jobs:
       run: |
         cd openwrt
         ./scripts/feeds install -a
+
+    - name: Show passwall version info
+      run: |
+        cd openwrt
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "  PassWall 版本追踪"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo ""
+        echo "📦 各 feed 中 luci-app-passwall 的版本："
+        for feed_dir in feeds/*/luci-app-passwall; do
+          if [ -d "$feed_dir" ]; then
+            FEED_NAME=$(echo "$feed_dir" | cut -d'/' -f2)
+            VERSION=$(grep '^PKG_VERSION' "$feed_dir/Makefile" 2>/dev/null | head -1)
+            RELEASE=$(grep '^PKG_RELEASE' "$feed_dir/Makefile" 2>/dev/null | head -1)
+            echo "  [$FEED_NAME] $VERSION $RELEASE"
+          fi
+        done
+        echo ""
+        echo "🔗 package/ 中实际链接的 passwall："
+        if [ -L "package/luci-app-passwall" ]; then
+          TARGET=$(readlink package/luci-app-passwall)
+          echo "  指向: $TARGET"
+          VERSION=$(grep '^PKG_VERSION' "package/luci-app-passwall/Makefile" 2>/dev/null | head -1)
+          echo "  $VERSION"
+        else
+          echo "  (未找到符号链接)"
+        fi
+        echo ""
+        echo "💾 缓存中的旧 passwall ipk："
+        find staging_dir -name "luci-app-passwall*" -type f 2>/dev/null || echo "  (无)"
+        find build_dir -name "luci-app-passwall*" -maxdepth 3 -type d 2>/dev/null || echo "  (无)"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 
     - name: Download AdGuardHome binary
