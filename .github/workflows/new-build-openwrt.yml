@@ -152,7 +152,7 @@ jobs:
       run: |
         cd openwrt
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "  PassWall 版本追踪"
+        echo "  PassWall 版本追踪（详细）"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
         echo "📦 各 feed 中 luci-app-passwall 的版本："
@@ -167,16 +167,29 @@ jobs:
           fi
         done
         echo ""
-        echo "🔗 package/ 中实际链接的 passwall："
-        if [ -L "package/luci-app-passwall" ]; then
-          TARGET=$(readlink package/luci-app-passwall)
-          echo "  指向: $TARGET"
-          VERSION=$(grep '^PKG_VERSION' "package/luci-app-passwall/Makefile" 2>/dev/null | head -1)
-          echo "  $VERSION"
-        else
-          echo "  (未找到符号链接，可能被直接拷贝)"
-          ls -la package/ | grep passwall || echo "  package/ 中无 passwall"
-        fi
+        echo "🔗 package/ 中所有 passwall 相关内容："
+        find package/ -maxdepth 2 -name "*passwall*" -o -name "*Passwall*" 2>/dev/null | head -20
+        echo ""
+        echo "  符号链接检查："
+        for d in package/*passwall* package/**/*passwall*; do
+          if [ -L "$d" ]; then
+            echo "  $d -> $(readlink $d)"
+          fi
+        done 2>/dev/null
+        echo ""
+        echo "📂 lede 源码 package/ 目录中的 passwall："
+        find package/lean package/ctcgfw package/openwrt -maxdepth 1 -name "*passwall*" 2>/dev/null || echo "  (无)"
+        echo ""
+        echo "📋 feeds install 日志中 passwall 相关信息："
+        grep -i "passwall" tmp/.feedsinfo 2>/dev/null | head -10 || echo "  (无 feedsinfo)"
+        echo ""
+        echo "🔍 所有 feeds 中 passwall 的优先级（index 文件）："
+        for feed in feeds/*/index; do
+          if [ -f "$feed" ]; then
+            FEED_NAME=$(echo "$feed" | cut -d'/' -f2)
+            grep "passwall" "$feed" 2>/dev/null | head -3 && echo "  ↑ 来自 [$FEED_NAME]"
+          fi
+        done
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     - name: luci-theme-argon
