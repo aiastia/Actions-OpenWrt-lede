@@ -28,10 +28,8 @@ env:
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
-  UPLOAD_BIN_DIR: false
+  UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
@@ -147,50 +145,6 @@ jobs:
       run: |
         cd openwrt
         ./scripts/feeds install -a
-
-    - name: Show passwall version info
-      run: |
-        cd openwrt
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "  PassWall 版本追踪（详细）"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo ""
-        echo "📦 各 feed 中 luci-app-passwall 的版本："
-        for feed_dir in feeds/*/luci-app-passwall; do
-          if [ -d "$feed_dir" ]; then
-            FEED_NAME=$(echo "$feed_dir" | cut -d'/' -f2)
-            VERSION=$(grep '^PKG_VERSION' "$feed_dir/Makefile" 2>/dev/null | head -1)
-            RELEASE=$(grep '^PKG_RELEASE' "$feed_dir/Makefile" 2>/dev/null | head -1)
-            COMMIT=$(cd "$feed_dir" && git log --oneline -1 2>/dev/null || echo "N/A")
-            echo "  [$FEED_NAME] $VERSION $RELEASE"
-            echo "    最后提交: $COMMIT"
-          fi
-        done
-        echo ""
-        echo "🔗 package/ 中所有 passwall 相关内容："
-        find package/ -maxdepth 2 -name "*passwall*" -o -name "*Passwall*" 2>/dev/null | head -20
-        echo ""
-        echo "  符号链接检查："
-        for d in package/*passwall* package/**/*passwall*; do
-          if [ -L "$d" ]; then
-            echo "  $d -> $(readlink $d)"
-          fi
-        done 2>/dev/null
-        echo ""
-        echo "📂 lede 源码 package/ 目录中的 passwall："
-        find package/lean package/ctcgfw package/openwrt -maxdepth 1 -name "*passwall*" 2>/dev/null || echo "  (无)"
-        echo ""
-        echo "📋 feeds install 日志中 passwall 相关信息："
-        grep -i "passwall" tmp/.feedsinfo 2>/dev/null | head -10 || echo "  (无 feedsinfo)"
-        echo ""
-        echo "🔍 所有 feeds 中 passwall 的优先级（index 文件）："
-        for feed in feeds/*/index; do
-          if [ -f "$feed" ]; then
-            FEED_NAME=$(echo "$feed" | cut -d'/' -f2)
-            grep "passwall" "$feed" 2>/dev/null | head -3 && echo "  ↑ 来自 [$FEED_NAME]"
-          fi
-        done
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
     - name: luci-theme-argon
       run: |
@@ -355,32 +309,12 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Upload firmware to cowtransfer
-      id: cowtransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        echo "url=$(cat cowtransfer.log | grep https | cut -f3 -d" ")" >> $GITHUB_OUTPUT
-
-    - name: Upload firmware to WeTransfer
-      id: wetransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-        echo "url=$(cat wetransfer.log | grep https | cut -f3 -d" ")" >> $GITHUB_OUTPUT
-
     - name: Generate release tag
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
@@ -401,5 +335,5 @@ jobs:
         releases_keep_latest: 10
         delete_tags: true
         delete_workflows: true
-        workflows_keep_day: 1
+        workflows_keep_day: 3
         gh_token: ${{ secrets.GITHUB_TOKEN }}

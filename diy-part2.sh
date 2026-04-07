@@ -32,12 +32,11 @@
 #rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
 rm -rf feeds/kenzo/luci-theme-alpha
 
-# 删除 kenzok8/small 中的旧版 passwall，避免覆盖官方新版（26.x）
-rm -rf feeds/small/luci-app-passwall
-rm -rf feeds/small/luci-app-passwall2
+# 删除 coolsnowwolf/luci feed 中的旧版 passwall（25.8.x），这才是版本不对的真正原因
+rm -rf feeds/luci/applications/luci-app-passwall
+rm -rf feeds/luci/applications/luci-app-passwall2
 
-# 重新从官方 passwall_luci feed 安装正确版本
-rm -f package/luci-app-passwall
-rm -f package/luci-app-passwall2
+# 同时删除 kenzok8/small 中的 passwall，避免冲突
+
 ./scripts/feeds install -p passwall_luci luci-app-passwall
 ./scripts/feeds install -p passwall_luci luci-app-passwall2
