@@ -153,10 +153,10 @@ jobs:
         echo "正在下载 AdGuardHome ${ADG_VERSION} ..."
         curl -fsSL -o /tmp/AdGuardHome.tar.gz "${ADG_URL}"
         tar -xzf /tmp/AdGuardHome.tar.gz -C /tmp
-        mkdir -p openwrt/files/usr/bin
-        cp /tmp/AdGuardHome/AdGuardHome openwrt/files/usr/bin/AdGuardHome
-        chmod +x openwrt/files/usr/bin/AdGuardHome
-        echo "AdGuardHome 二进制文件已准备好: $(file openwrt/files/usr/bin/AdGuardHome)"
+        mkdir -p openwrt/files/usr/bin/AdGuardHome
+        cp /tmp/AdGuardHome/AdGuardHome openwrt/files/usr/bin/AdGuardHome/AdGuardHome
+        chmod +x openwrt/files/usr/bin/AdGuardHome/AdGuardHome
+        echo "AdGuardHome 二进制文件已准备好: $(file openwrt/files/usr/bin/AdGuardHome/AdGuardHome)"
         rm -rf /tmp/AdGuardHome /tmp/AdGuardHome.tar.gz
 
     - name: Download package
