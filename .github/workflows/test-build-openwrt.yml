@@ -7,7 +7,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build test OpenWrt neww
+name: Build  test OpenWrt neww
 
 on:
   repository_dispatch:
@@ -102,6 +102,12 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
+    - name: Make defconfig
+      run: |
+        cd openwrt
+        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
+        make defconfig
+
     - name: Cache OpenWrt ccache
       uses: actions/cache@v5
       with:
@@ -138,8 +144,6 @@ jobs:
       id: package
       run: |
         cd openwrt
-        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
-        make defconfig
         make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
