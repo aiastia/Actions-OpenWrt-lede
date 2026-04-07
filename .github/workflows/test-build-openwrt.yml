@@ -108,6 +108,17 @@ jobs:
         echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
         make defconfig
 
+    - name: Cache OpenWrt toolchain
+      uses: actions/cache@v5
+      with:
+        path: |
+          ${{ github.workspace }}/openwrt/staging_dir/toolchain*
+          ${{ github.workspace }}/openwrt/staging_dir/host
+          ${{ github.workspace }}/openwrt/build_dir/target-*/*/toolchain
+        key: ${{ runner.os }}-toolchain-${{ hashFiles('openwrt/.config') }}-${{ env.REPO_BRANCH }}
+        restore-keys: |
+          ${{ runner.os }}-toolchain-${{ env.REPO_BRANCH }}-
+
     - name: Cache OpenWrt ccache
       uses: actions/cache@v5
       with:
@@ -126,6 +137,14 @@ jobs:
         key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
         restore-keys: |
           ${{ runner.os }}-openwrt-dl-
+
+    - name: Configure ccache
+      run: |
+        cd openwrt
+        mkdir -p .ccache
+        ccache -M 10G
+        ccache -z
+        echo "ccache 最大容量: $(ccache -M 2>&1)"
 
     - name: Download AdGuardHome binary
       run: |
@@ -208,11 +227,6 @@ jobs:
           config-diff.txt
         retention-days: 7
 
-    - name: Clean Go module cache
-      run: |
-        rm -rf openwrt/dl/go-mod-cache
-        echo "Go module cache cleaned"
-
     - name: Compile the firmware
       id: compile
       timeout-minutes: 300
@@ -224,6 +238,20 @@ jobs:
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+
+    - name: Show ccache statistics
+      if: always()
+      run: |
+        cd openwrt
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "  ccache 编译缓存统计"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        ccache -s 2>/dev/null || echo "ccache 统计不可用"
+
+    - name: Clean Go module cache
+      run: |
+        rm -rf openwrt/dl/go-mod-cache
+        echo "Go module cache cleaned"
 
     - name: Upload bin directory
       uses: actions/upload-artifact@main
