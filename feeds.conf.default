@@ -17,7 +17,7 @@ src-git passwall_luci https://github.com/Openwrt-Passwall/openwrt-passwall.git;m
 
 src-git alist_luci https://github.com/sbwml/openwrt-alist
 src-git istore https://github.com/linkease/istore;main
-src-git nps https://github.com/djylb/nps-openwrt.git
+#src-git nps https://github.com/djylb/nps-openwrt.git
 
 # ========== 备用 Feed 源（取消注释即可启用） ==========
 
