@@ -31,3 +31,13 @@
 #git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 #rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
 rm -rf feeds/kenzo/luci-theme-alpha
+
+# 删除 kenzok8/small 中的旧版 passwall，避免覆盖官方新版（26.x）
+rm -rf feeds/small/luci-app-passwall
+rm -rf feeds/small/luci-app-passwall2
+
+# 重新从官方 passwall_luci feed 安装正确版本
+rm -f package/luci-app-passwall
+rm -f package/luci-app-passwall2
+./scripts/feeds install -p passwall_luci luci-app-passwall
+./scripts/feeds install -p passwall_luci luci-app-passwall2
