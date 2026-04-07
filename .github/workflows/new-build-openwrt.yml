@@ -76,25 +76,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Cache OpenWrt ccache
-      uses: actions/cache@v5
-      with:
-        path: ${{ github.workspace }}/openwrt/.ccache
-        key: ${{ runner.os }}-ccache-${{ hashFiles('openwrt/.config') }}
-        restore-keys: |
-          ${{ runner.os }}-ccache-
-
-    - name: Cache OpenWrt dl
-      uses: actions/cache@v5
-      with:
-        path: |
-          ${{ github.workspace }}/openwrt/dl
-          !${{ github.workspace }}/openwrt/dl/go-mod-cache
-          ${{ github.workspace }}/openwrt/tmp/go-build
-        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
-        restore-keys: |
-          ${{ runner.os }}-openwrt-dl-
-
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -138,14 +119,55 @@ jobs:
         echo "AdGuardHome 二进制文件已准备好: $(file openwrt/files/usr/bin/AdGuardHome/AdGuardHome)"
         rm -rf /tmp/AdGuardHome /tmp/AdGuardHome.tar.gz
 
+    - name: Make defconfig
+      run: |
+        cd openwrt
+        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
+        make defconfig
+
+    - name: Cache OpenWrt toolchain
+      uses: actions/cache@v5
+      with:
+        path: |
+          ${{ github.workspace }}/openwrt/staging_dir/toolchain*
+          ${{ github.workspace }}/openwrt/staging_dir/host
+          ${{ github.workspace }}/openwrt/build_dir/target-*/*/toolchain
+        key: ${{ runner.os }}-toolchain-${{ hashFiles('openwrt/.config') }}-${{ env.REPO_BRANCH }}
+        restore-keys: |
+          ${{ runner.os }}-toolchain-${{ env.REPO_BRANCH }}-
+
+    - name: Cache OpenWrt ccache
+      uses: actions/cache@v5
+      with:
+        path: ${{ github.workspace }}/openwrt/.ccache
+        key: ${{ runner.os }}-ccache-${{ hashFiles('openwrt/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-
+
+    - name: Cache OpenWrt dl
+      uses: actions/cache@v5
+      with:
+        path: |
+          ${{ github.workspace }}/openwrt/dl
+          !${{ github.workspace }}/openwrt/dl/go-mod-cache
+          ${{ github.workspace }}/openwrt/tmp/go-build
+        key: ${{ runner.os }}-openwrt-dl-${{ hashFiles('openwrt/feeds.conf', 'openwrt/.config') }}
+        restore-keys: |
+          ${{ runner.os }}-openwrt-dl-
+
+    - name: Configure ccache
+      run: |
+        cd openwrt
+        mkdir -p .ccache
+        ccache -M 10G
+        ccache -z
+        echo "ccache 最大容量: $(ccache -M 2>&1)"
 
     - name: Download package
       id: package
       run: |
         cd openwrt
-        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
-        make defconfig
-        make download -j8
+        make download -j$(nproc)
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
       
