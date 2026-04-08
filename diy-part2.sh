@@ -42,3 +42,7 @@ rm -rf feeds/luci/applications/luci-app-passwall2
 
 ./scripts/feeds install -p passwall_luci luci-app-passwall
 ./scripts/feeds install -p passwall_luci luci-app-passwall2
+
+# 修复 luci-app-netdata 菜单消失问题
+echo "Fixing luci-app-netdata..."
+sed -i '/pidof netdata/d' feeds/luci/applications/luci-app-netdata/luasrc/controller/netdata.lua
