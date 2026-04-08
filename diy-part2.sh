@@ -45,4 +45,4 @@ rm -rf feeds/luci/applications/luci-app-passwall2
 
 # 修复 luci-app-netdata 菜单消失问题
 echo "Fixing luci-app-netdata..."
-sed -i '/pidof netdata/d' feeds/luci/applications/luci-app-netdata/luasrc/controller/netdata.lua
+sed -i '/pidof netdata/,+2d' feeds/luci/applications/luci-app-netdata/luasrc/controller/netdata.lua
