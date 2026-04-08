@@ -35,6 +35,8 @@ rm -rf feeds/kenzo/luci-theme-alpha
 # 删除 coolsnowwolf/luci feed 中的旧版 passwall（25.8.x），这才是版本不对的真正原因
 rm -rf feeds/luci/applications/luci-app-passwall
 rm -rf feeds/luci/applications/luci-app-passwall2
+#删除源中npc  net/nps/Makefile
+#rm -rf feeds/packages/net/nps
 
 # 同时删除 kenzok8/small 中的 passwall，避免冲突
 
