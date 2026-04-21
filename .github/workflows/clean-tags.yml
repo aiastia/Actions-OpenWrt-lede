@@ -1,0 +1,47 @@
+name: Clean Old Tags
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 22 */2 * *'
+
+jobs:
+  clean-tags:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Clean old tags (keep latest)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "====== 获取所有 tags ======"
+          tags=$(git tag -l --sort=-creatordate)
+          
+          if [ -z "$tags" ]; then
+            echo "没有找到任何 tag，跳过清理。"
+            exit 0
+          fi
+
+          # 保留最新的一个 tag
+          latest_tag=$(echo "$tags" | head -n 1)
+          echo "✅ 保留最新 tag: $latest_tag"
+
+          # 删除其余 tags
+          old_tags=$(echo "$tags" | tail -n +2)
+          count=$(echo "$old_tags" | wc -l | tr -d ' ')
+          echo "🗑️  即将删除 $count 个旧 tag"
+
+          for tag in $old_tags; do
+            echo "删除远端 tag: $tag"
+            git push origin --delete "refs/tags/$tag" 2>/dev/null || echo "⚠️ 删除 $tag 失败（可能已被删除）"
+          done
+
+          echo "====== 清理完成 ======"
+          echo "保留的 tag: $latest_tag"
