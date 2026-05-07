@@ -46,3 +46,14 @@ rm -rf feeds/luci/applications/luci-app-passwall2
 # 修复 luci-app-netdata 菜单消失问题
 echo "Fixing luci-app-netdata..."
 sed -i '/pidof netdata/,+2d' feeds/luci/applications/luci-app-netdata/luasrc/controller/netdata.lua
+
+
+#vlmcsd 
+sed -i 's/^CONFIG_PACKAGE_vlmcsd=.*/# CONFIG_PACKAGE_vlmcsd is not set/' .config || echo "# CONFIG_PACKAGE_vlmcsd is not set" >> .config
+sed -i 's/^CONFIG_PACKAGE_luci-app-vlmcsd=.*/# CONFIG_PACKAGE_luci-app-vlmcsd is not set/' .config || echo "# CONFIG_PACKAGE_luci-app-vlmcsd is not set" >> .config
+rm -rf feeds/packages/net/vlmcsd
+rm -rf feeds/luci/applications/luci-app-vlmcsd
+# 如果你想排查被拉入的依赖，可以打印一下
+grep vlmcsd .config || echo "vlmcsd 已禁用"
+
+
