@@ -2,8 +2,8 @@ name: Clean Old Tags
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 22 */2 * *'
+  #schedule:
+ #   - cron: '0 22 */2 * *'
 
 jobs:
   clean-tags:
