@@ -57,3 +57,16 @@ sed -i '/pidof netdata/,+2d' feeds/luci/applications/luci-app-netdata/luasrc/con
 # grep vlmcsd .config || echo "vlmcsd 已禁用"
 
 
+
+# diy-part2.sh - 自动处理 zh-tw → zh-cn 国际化文件
+# diy-part2.sh - 处理 iStore.zh-tw → iStore.zh-cn
+I18N_DIRS=("feeds/luci/applications/iStore/i18n" "/usr/lib/lua/luci/i18n")
+for dir in "${I18N_DIRS[@]}"; do
+    [ -d "$dir" ] || continue
+    for file in "$dir"/*.zh-tw.lmo; do
+        [ -e "$file" ] || continue
+        target="${file%.zh-tw.lmo}.zh-cn.lmo"
+        cp -f "$file" "$target"
+        echo "✅ 已生成: $(basename "$target")"
+    done
+done
