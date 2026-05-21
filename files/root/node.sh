@@ -79,9 +79,6 @@ fi
 # -------------------------------
 # Step 3: 启动 cloudflared
 # -------------------------------
-chmod +x /root/cloudflared
-
-
 if [ -n "$CLOUDFLARED_TOKEN" ]; then
     nohup /root/cloudflared tunnel --no-autoupdate run --token "$CLOUDFLARED_TOKEN" >/tmp/cloudflared.log 2>&1 &
 else
