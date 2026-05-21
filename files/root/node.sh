@@ -8,8 +8,14 @@
 # Short-Description: Start status-client first, then update/start cloudflared
 ### END INIT INFO
 
-# 等待网络启动
-sleep 10s
+# -------------------------------
+# Step 0: 等待网络启动（循环检测）
+# -------------------------------
+echo "[node.sh] Waiting for network..." >> /tmp/node.log
+until ping -c1 8.8.8.8 >/dev/null 2>&1; do
+    sleep 2
+done
+sleep 3s
 
 # 加载环境变量
 if [ -f /etc/profile.d/env.sh ]; then
@@ -17,34 +23,34 @@ if [ -f /etc/profile.d/env.sh ]; then
 fi
 
 # -------------------------------
-# Step 0: 授权可执行文件
+# Step 1: 授权并结束旧进程
 # -------------------------------
-
 chmod +x /root/status-client
 
-# 如果已有 status-client，先结束
-if pidof status-client >/dev/null; then
-    killall status-client 2>/dev/null
-fi
+# 安全结束 status-client
+for pid in $(pidof /root/status-client 2>/dev/null); do
+    kill -9 "$pid"
+done
 
-# 如果已有 cloudflared，先结束
-if pidof cloudflared >/dev/null; then
-    killall cloudflared 2>/dev/null
-fi
+# 安全结束 cloudflared
+for pid in $(pidof /root/cloudflared 2>/dev/null); do
+    kill -9 "$pid"
+done
 
-sleep 3s
+sleep 2s
 
 # -------------------------------
-# Step 1: 启动 status-client
+# Step 2: 启动 status-client
 # -------------------------------
 if [ -n "$STATUS_DSN" ]; then
     nohup /root/status-client -dsn "$STATUS_DSN" >/tmp/status-client.log 2>&1 &
+    echo "[node.sh] status-client started" >> /tmp/node.log
 else
     echo "[node.sh] STATUS_DSN 未设置，status-client 未启动" >> /tmp/node.log
 fi
 
 # -------------------------------
-# Step 2: 更新 cloudflared
+# Step 3: 更新 cloudflared
 # -------------------------------
 REPO="cloudflare/cloudflared"
 
@@ -69,7 +75,7 @@ else
     if [ -f "/root/cloudflared" ]; then
         CURRENT_VERSION=$(/root/cloudflared -v 2>/dev/null | sed -n 's/.* \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')
         if [ -n "$CURRENT_VERSION" ]; then
-            # ---- 版本拆分（POSIX 兼容） ----
+            # ---- 版本拆分 ----
             split_version() {
                 __v=$1
                 _MAJOR="${__v%%.*}"
@@ -81,10 +87,11 @@ else
             C_MAJOR=$_MAJOR C_MINOR=$_MINOR C_PATCH=$_PATCH
             split_version "$NEW_VERSION"
             N_MAJOR=$_MAJOR N_MINOR=$_MINOR N_PATCH=$_PATCH
-            # -------------------------------
+
+            # 判断是否需要更新
             if [ "$N_MAJOR" -lt "$C_MAJOR" ] || \
                { [ "$N_MAJOR" -eq "$C_MAJOR" ] && [ "$N_MINOR" -lt "$C_MINOR" ]; } || \
-               { [ "$N_MAJOR" -eq "$C_MAJOR" ] && [ "$N_MINOR" -eq "$C_MINOR" ] && [ "$N_PATCH" -le "$C_PATCH" ]; }; then
+               { [ "$N_MAJOR" -eq "$C_MAJOR" ] && [ "$N_MINOR" -eq "$C_MINOR" ] && [ "$N_PATCH" -lt "$C_PATCH" ]; }; then
                 UPDATE_NEEDED=0
             fi
         fi
@@ -99,10 +106,11 @@ else
 fi
 
 # -------------------------------
-# Step 3: 启动 cloudflared
+# Step 4: 启动 cloudflared
 # -------------------------------
 if [ -n "$CLOUDFLARED_TOKEN" ]; then
     nohup /root/cloudflared tunnel --no-autoupdate run --token "$CLOUDFLARED_TOKEN" >/tmp/cloudflared.log 2>&1 &
+    echo "[node.sh] cloudflared started" >> /tmp/node.log
 else
     echo "[node.sh] CLOUDFLARED_TOKEN 未设置，cloudflared 未启动" >> /tmp/node.log
 fi
