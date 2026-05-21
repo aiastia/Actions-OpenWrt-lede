@@ -1,4 +1,3 @@
 #!/bin/sh
-sleep 120s
-
-nohup /root/status-client -dsn wss://openwrt:123123@node >/dev/null 2>&1 &
+sleep 10s
+nohup /root/status-client -dsn "$STATUS_DSN" >/dev/null 2>&1 &
