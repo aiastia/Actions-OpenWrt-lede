@@ -11,10 +11,12 @@
 # node.sh - OpenWrt 启动脚本
 
 # 等待网络启动
-
-cat  /etc/profile.d/env.sh
-
 sleep 10s
+
+# 加载环境变量
+if [ -f /etc/profile.d/env.sh ]; then
+    . /etc/profile.d/env.sh
+fi
 
 # 启动 cloudflared
 if [ -n "$CLOUDFLARED_TOKEN" ]; then
