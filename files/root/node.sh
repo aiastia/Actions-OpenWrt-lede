@@ -58,8 +58,19 @@ else
     if [ -f "/root/cloudflared" ]; then
         CURRENT_VERSION=$(/root/cloudflared -v 2>/dev/null | sed -n 's/.* \([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p')
         if [ -n "$CURRENT_VERSION" ]; then
-            IFS=. read -r C_MAJOR C_MINOR C_PATCH <<< "$CURRENT_VERSION"
-            IFS=. read -r N_MAJOR N_MINOR N_PATCH <<< "$NEW_VERSION"
+            # ---- 版本拆分（POSIX 兼容） ----
+            split_version() {
+                __v=$1
+                _MAJOR="${__v%%.*}"
+                __tmp="${__v#*.}"
+                _MINOR="${__tmp%%.*}"
+                _PATCH="${__tmp#*.}"
+            }
+            split_version "$CURRENT_VERSION"
+            C_MAJOR=$_MAJOR C_MINOR=$_MINOR C_PATCH=$_PATCH
+            split_version "$NEW_VERSION"
+            N_MAJOR=$_MAJOR N_MINOR=$_MINOR N_PATCH=$_PATCH
+            # -------------------------------
             if [ "$N_MAJOR" -lt "$C_MAJOR" ] || \
                { [ "$N_MAJOR" -eq "$C_MAJOR" ] && [ "$N_MINOR" -lt "$C_MINOR" ]; } || \
                { [ "$N_MAJOR" -eq "$C_MAJOR" ] && [ "$N_MINOR" -eq "$C_MINOR" ] && [ "$N_PATCH" -le "$C_PATCH" ]; }; then
