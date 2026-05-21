@@ -1,4 +1,4 @@
-chmod +x cf.sh
-chmod +x cfdown.sh
+cat /etc/profile.d/env.sh
+
 chmod +x node.sh
-chmod +x status-client
+
