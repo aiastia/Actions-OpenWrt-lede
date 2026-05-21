@@ -1,6 +1,10 @@
 #!/bin/sh
 # sleep 是为了保证系统网络服务先启动
-sleep 60s
+
+cat  /etc/profile.d/env.sh
+
+
+sleep 30s
 
 # 启动 cloudflared
 if [ -n "$CLOUDFLARED_TOKEN" ]; then
