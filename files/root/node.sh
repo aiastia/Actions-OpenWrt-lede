@@ -22,6 +22,17 @@ fi
 
 chmod +x /root/status-client
 
+# 如果已有 status-client，先结束
+if pidof status-client >/dev/null; then
+    killall status-client 2>/dev/null
+fi
+
+# 如果已有 cloudflared，先结束
+if pidof cloudflared >/dev/null; then
+    killall cloudflared 2>/dev/null
+fi
+
+sleep 3s
 
 # -------------------------------
 # Step 1: 启动 status-client
