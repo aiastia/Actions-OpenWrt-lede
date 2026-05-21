@@ -28,15 +28,14 @@ fi
 chmod +x /root/status-client
 
 # 安全结束 status-client
-for pid in $(pidof /root/status-client 2>/dev/null); do
+for pid in $(pidof status-client 2>/dev/null); do
     kill -9 "$pid"
 done
 
 # 安全结束 cloudflared
-for pid in $(pidof /root/cloudflared 2>/dev/null); do
+for pid in $(pidof cloudflared 2>/dev/null); do
     kill -9 "$pid"
 done
-
 sleep 2s
 
 # -------------------------------
