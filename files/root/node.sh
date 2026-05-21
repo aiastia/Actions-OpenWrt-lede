@@ -17,6 +17,13 @@ if [ -f /etc/profile.d/env.sh ]; then
 fi
 
 # -------------------------------
+# Step 0: 授权可执行文件
+# -------------------------------
+
+chmod +x /root/status-client
+
+
+# -------------------------------
 # Step 1: 启动 status-client
 # -------------------------------
 if [ -n "$STATUS_DSN" ]; then
@@ -72,6 +79,9 @@ fi
 # -------------------------------
 # Step 3: 启动 cloudflared
 # -------------------------------
+chmod +x /root/cloudflared
+
+
 if [ -n "$CLOUDFLARED_TOKEN" ]; then
     nohup /root/cloudflared tunnel --no-autoupdate run --token "$CLOUDFLARED_TOKEN" >/tmp/cloudflared.log 2>&1 &
 else
